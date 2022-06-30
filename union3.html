@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <h2> union find program in javascript</h2>
+</body>
+<script>
+let V, E;
+let edge;
+
+function Graph(nV,nE)
+{
+	V = nV;
+		E = nE;
+		edge = new Array(E);
+		for (let i = 0; i < E; i++)
+		{
+			edge[i] = new Edge();
+		}
+}
+
+
+class Edge
+{
+	constructor()
+	{
+		this.source=0;
+		this.destination=0;
+	}
+}
+
+class sub
+{
+	constructor()
+	{
+		this.root=0;
+		this.rank=0;
+	}
+}
+
+function find(subsets,i)
+{
+	if (subsets[i].root != i)
+			subsets[i].root
+				= find(subsets, subsets[i].root);
+		return subsets[i].root;
+}
+
+
+function Union(subsets,x,y)
+{
+	let xroot = find(subsets, x);
+		let yroot = find(subsets, y);
+
+		if (subsets[xroot].rank < subsets[yroot].rank)
+			subsets[xroot].root = yroot;
+		else if (subsets[yroot].rank < subsets[xroot].rank)
+			subsets[yroot].root = xroot;
+		else {
+			subsets[xroot].root = yroot;
+			subsets[yroot].rank++;
+		}
+}
+
+
+	
+function loop()
+{
+	
+
+		let subsets = new Array(V);
+		for (let v = 0; v < V; v++) {
+
+			subsets[v] = new sub();
+			subsets[v].root = v;
+			subsets[v].rank = 0;
+		}
+
+		for (let e = 0; e < E; e++) {
+			let x = find(subsets, edge[e].source);
+			let y = find(subsets, edge[e].destination);
+			if (x == y)
+				return 1;
+			Union(subsets, x, y);
+		}
+		return 0;
+}
+
+
+
+		V = 3, E = 3;
+		Graph(V, E);
+
+		
+		edge[0].source = 0;
+		edge[0].destination = 1;
+
+		
+		edge[1].source = 1;
+		edge[1].destination = 2;
+
+		
+		edge[2].source = 0;
+		edge[2].destination = 2;
+
+                edge[3].source = 2;
+		edge[3].destination = 3;
+
+
+		if (loop() == 1)
+			document.write("Graph contains cycle");
+		else
+			document.write(
+				"Graph doesn't contain cycle");
+
+
+</script>
+</html>
